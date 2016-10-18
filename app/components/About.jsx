@@ -2,9 +2,9 @@ var React   = require("react");
 
 var About   = (props) => {
    return (
-      <div>
-         <h3>About Component</h3>
-         <p>This is the About Page</p>
+      <div className="text-center">
+         <h1>About</h1>
+         <p>This Weather App is can get your local weather temperature in degree celsius (&#8451;)</p>
       </div>
    );
 };
