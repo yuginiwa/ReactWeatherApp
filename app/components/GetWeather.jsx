@@ -2,6 +2,7 @@ var React       = require("react");
 var GetWeatherMessage = require("GetWeatherMessage");
 var GetWeatherForm   = require("GetWeatherForm");
 var openWeatherMap   = require("openWeatherMap");
+var ErrorModal       = require("ErrorModal");
 
 
 var GetWeather  = React.createClass({
@@ -14,7 +15,10 @@ var GetWeather  = React.createClass({
      // Yung this - value ay location na ininput ng user
      var that = this;
      
-     this.setState({isLoading: true});
+     this.setState({
+         isLoading: true,
+         errorMessage: undefined
+     });
      
      openWeatherMap.getTemp(location).then(function (temp) {
         that.setState({
@@ -22,9 +26,11 @@ var GetWeather  = React.createClass({
             location: location,
             temp: temp
          }); 
-     }, function (errorMessage) {
-        that.setState({isLoading: false});
-        alert(errorMessage);
+     }, function (e) {
+        that.setState({
+            isLoading: false,
+            errorMessage: e.message
+        });
      });
    },
    render: function () {
@@ -38,11 +44,20 @@ var GetWeather  = React.createClass({
           }
        }
        
+       function renderError () {
+           if(typeof errorMessage === 'string'){
+               return (
+                   <ErrorModal message={errorMessage}/>
+                )
+           }
+       }
+       
        return (
             <div>
                <h1 class="text-center">Get Weather</h1>   
                <GetWeatherForm onSearch={this.handlingSearch}/>
                {renderMessage()}
+               {renderError()}
             </div>
         );
    }
